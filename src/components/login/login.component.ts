@@ -13,7 +13,7 @@ export class LoginComponent {
   loginSuccess = output<void>();
 
   loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required]],
     password: ['', Validators.required],
   });
 

@@ -1,74 +1,88 @@
 
-<div class="min-h-screen flex items-center justify-center bg-blue-50/50 p-4">
-  <div class="w-full max-w-md">
-    <!-- Logo and Title -->
-    <div class="flex flex-col items-center justify-center mb-8">
-       <svg class="h-20 w-20 text-blue-600" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M50 0L0 100H100L50 0ZM50 25L25 75H75L50 25Z" />
-       </svg>
-      <h1 class="text-3xl font-bold text-gray-800 mt-2">GIS - Gestión Integral de Salud</h1>
-      <p class="text-gray-500">¡Bienvenido! Por favor, inicie sesión.</p>
+<div class="min-h-screen w-full flex flex-col items-center justify-center bg-slate-100 p-4">
+  <div class="w-full max-w-6xl">
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div class="grid lg:grid-cols-5">
+        <!-- Left Column: Branding -->
+        <div class="lg:col-span-2 p-12 flex flex-col justify-center items-center text-center border-r border-gray-100">
+          <svg class="h-20 w-20 text-blue-600" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M50 0L0 100H100L50 0ZM50 25L25 75H75L50 25Z" />
+          </svg>
+          <h1 class="text-3xl font-bold text-gray-800 mt-6 leading-tight">Gestiona la salud del mañana, hoy.</h1>
+          <p class="text-base text-gray-500 mt-4">Nuestra plataforma integral le brinda las herramientas para optimizar la atención al paciente y la gestión clínica.</p>
+        </div>
+
+        <!-- Right Column: Form -->
+        <div class="lg:col-span-3 p-16">
+          <h2 class="text-3xl font-bold text-gray-800">Bienvenido de nuevo</h2>
+          <p class="text-gray-500 mt-2">Inicie sesión en su cuenta para continuar.</p>
+
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+            <!-- Username Input -->
+            <div>
+               <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Usuario</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-400">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                  </svg>
+                </span>
+                <input 
+                  type="text" 
+                  id="username" 
+                  formControlName="username"
+                  class="block w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm"
+                  placeholder="sadmin">
+              </div>
+               @if (f.username.touched && f.username.invalid) {
+                <p class="mt-1 text-xs text-red-600">El nombre de usuario es obligatorio.</p>
+              }
+            </div>
+
+            <!-- Password Input -->
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                 <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                 <a href="#" class="text-sm font-semibold text-blue-600 hover:text-blue-700">¿Olvidó su contraseña?</a>
+              </div>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-400">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                  </svg>
+                </span>
+                <input 
+                  type="password" 
+                  id="password" 
+                  formControlName="password"
+                  class="block w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm"
+                  placeholder="••••••••">
+              </div>
+              @if (f.password.touched && f.password.invalid) {
+                  <p class="mt-1 text-xs text-red-600">La contraseña es obligatoria.</p>
+              }
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-4">
+              <button 
+                type="submit" 
+                class="w-full flex justify-center py-3 px-4 rounded-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 disabled:opacity-60 shadow-md hover:shadow-lg transition-shadow duration-300"
+                [disabled]="!loginForm.valid">
+                Continuar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-
-    <!-- Login Form Card -->
-    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-        <!-- Email Input -->
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-          <input 
-            type="email" 
-            id="email" 
-            formControlName="email"
-            class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            [class.border-red-500]="f.email.touched && f.email.invalid"
-            [class.border-gray-300]="!f.email.touched || f.email.valid"
-            placeholder="usted@ejemplo.com">
-          @if (f.email.touched && f.email.errors?.['required']) {
-            <p class="mt-1 text-xs text-red-600">El correo es obligatorio.</p>
-          }
-          @if (f.email.touched && f.email.errors?.['email']) {
-            <p class="mt-1 text-xs text-red-600">Por favor, introduzca un correo válido.</p>
-          }
-        </div>
-
-        <!-- Password Input -->
-        <div>
-          <div class="flex justify-between items-center">
-            <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-            <a href="#" class="text-sm text-blue-600 hover:text-blue-500">¿Olvidó su contraseña?</a>
-          </div>
-          <input 
-            type="password" 
-            id="password" 
-            formControlName="password"
-            class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            [class.border-red-500]="f.password.touched && f.password.invalid"
-            [class.border-gray-300]="!f.password.touched || f.password.valid"
-            placeholder="••••••••">
-            @if (f.password.touched && f.password.invalid) {
-                <p class="mt-1 text-xs text-red-600">La contraseña es obligatoria.</p>
-            }
-        </div>
-
-        <!-- Submit Button -->
-        <div>
-          <button 
-            type="submit" 
-            class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-            [disabled]="!loginForm.valid">
-            Iniciar Sesión
-          </button>
-        </div>
-      </form>
-    </div>
-
-     <!-- Sign up link -->
-    <p class="mt-6 text-center text-sm text-gray-500">
-      ¿No tiene una cuenta?
-      <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
-        Regístrese
-      </a>
-    </p>
   </div>
+
+  <!-- Footer -->
+  <footer class="absolute bottom-0 left-0 right-0 p-4">
+      <div class="flex justify-between items-center text-xs text-gray-500">
+          <span>GIS v1.0.0</span>
+          <span>Ecosistema de salud inteligente</span>
+      </div>
+  </footer>
 </div>

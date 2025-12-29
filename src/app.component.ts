@@ -24,7 +24,7 @@ export type ActiveView = 'dashboard' | 'patient-list' | 'patient-form' | 'appoin
 export class AppComponent {
   private dataService = inject(DataService);
 
-  isLoggedIn = signal(true);
+  isLoggedIn = signal(false);
   isSidebarOpen = signal(true);
   activeView = signal<ActiveView>('dashboard');
   patientToEdit = signal<Patient | null>(null);
