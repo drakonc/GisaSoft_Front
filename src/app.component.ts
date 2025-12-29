@@ -8,16 +8,18 @@ import { AppointmentListComponent } from './components/appointment-list/appointm
 import { AppointmentFormComponent } from './components/appointment-form/appointment-form.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { Patient, Appointment, DataService } from './services/data.service';
+import { RoleListComponent } from './components/role-list/role-list.component';
+import { RoleFormComponent } from './components/role-form/role-form.component';
+import { Patient, Appointment, Role, DataService } from './services/data.service';
 
 
-export type ActiveView = 'dashboard' | 'patient-list' | 'patient-form' | 'appointment-list' | 'profile';
+export type ActiveView = 'dashboard' | 'patient-list' | 'patient-form' | 'appointment-list' | 'profile' | 'role-list' | 'role-form';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [SidebarComponent, DashboardComponent, PatientFormComponent, PatientListComponent, AppointmentListComponent, LoginComponent, ProfileComponent, AppointmentFormComponent]
+  imports: [SidebarComponent, DashboardComponent, PatientFormComponent, PatientListComponent, AppointmentListComponent, LoginComponent, ProfileComponent, AppointmentFormComponent, RoleListComponent, RoleFormComponent]
 })
 export class AppComponent {
   private dataService = inject(DataService);
@@ -26,6 +28,7 @@ export class AppComponent {
   isSidebarOpen = signal(true);
   activeView = signal<ActiveView>('dashboard');
   patientToEdit = signal<Patient | null>(null);
+  roleToEdit = signal<Role | null>(null);
   
   isProfileMenuOpen = signal(false);
   isAppointmentModalOpen = signal(false);
@@ -51,6 +54,9 @@ export class AppComponent {
   onViewChange(view: ActiveView) {
     if (view === 'patient-form') {
       this.patientToEdit.set(null); // Ensure we're in "add" mode by default
+    }
+    if (view === 'role-form') {
+      this.roleToEdit.set(null);
     }
     this.activeView.set(view);
     this.isProfileMenuOpen.set(false);
@@ -105,6 +111,26 @@ export class AppComponent {
       this.dataService.addAppointment(appointment);
     }
     this.onCloseAppointmentModal();
+  }
+
+  onEditRole(role: Role) {
+    this.roleToEdit.set(role);
+    this.activeView.set('role-form');
+    this.closeMobileSidebar();
+  }
+
+  onSaveRole(role: Role) {
+    if (role.id) {
+      this.dataService.updateRole(role);
+    } else {
+      this.dataService.addRole(role);
+    }
+    this.activeView.set('role-list');
+  }
+
+  onCancelRoleForm() {
+    this.roleToEdit.set(null);
+    this.activeView.set('role-list');
   }
 
   private closeMobileSidebar() {

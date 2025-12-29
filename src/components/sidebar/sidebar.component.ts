@@ -64,9 +64,9 @@ export class SidebarComponent {
       active: false,
       expanded: false,
       subItems: [
+        { name: 'Roles', active: false, view: 'role-list' },
         { name: 'Usuarios', active: false, view: 'dashboard' },
         { name: 'Sedes', active: false, view: 'dashboard' },
-        { name: 'Roles', active: false, view: 'dashboard' },
       ]
     },
   ]);

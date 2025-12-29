@@ -20,12 +20,26 @@ export interface Appointment {
     status: 'scheduled' | 'completed' | 'canceled';
 }
 
+export interface Permission {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export interface Role {
+  id?: number;
+  name: string;
+  description: string;
+  permissionIds: number[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
   private nextPatientId = 4;
   private nextAppointmentId = 4;
+  private nextRoleId = 4;
 
   readonly patients = signal<Patient[]>([
     { id: 1, name: 'Carlos Ramirez', condition: 'Cardiología', lastAppointment: '2024-07-15', notes: 'Revisión anual de marcapasos.', isActive: true, status: 'active' },
@@ -37,6 +51,20 @@ export class DataService {
       { id: 1, patientName: 'Carlos Ramirez', doctorName: 'Dr. Garcia', date: '2024-08-15', time: '10:00 AM', status: 'scheduled' },
       { id: 2, patientName: 'Sofia Torres', doctorName: 'Dra. Hernandez', date: '2024-08-12', time: '11:30 AM', status: 'completed' },
       { id: 3, patientName: 'Ana Gomez', doctorName: 'Dr. Garcia', date: '2024-08-10', time: '09:00 AM', status: 'canceled' },
+  ]);
+
+  readonly permissions = signal<Permission[]>([
+    { id: 1, name: 'gestion-pacientes', description: 'Crear, editar y eliminar pacientes' },
+    { id: 2, name: 'gestion-citas', description: 'Crear, editar y eliminar citas' },
+    { id: 3, name: 'ver-facturacion', description: 'Acceder a la sección de facturación' },
+    { id: 4, name: 'gestion-usuarios', description: 'Crear, editar y eliminar usuarios del sistema' },
+    { id: 5, name: 'gestion-roles', description: 'Crear, editar y eliminar roles y permisos' }
+  ]);
+
+  readonly roles = signal<Role[]>([
+    { id: 1, name: 'Administrador', description: 'Acceso total al sistema', permissionIds: [1, 2, 3, 4, 5] },
+    { id: 2, name: 'Doctor', description: 'Acceso a pacientes y citas', permissionIds: [1, 2] },
+    { id: 3, name: 'Recepcionista', description: 'Acceso a la gestión de citas', permissionIds: [2] }
   ]);
 
   // Patient Methods
@@ -69,5 +97,21 @@ export class DataService {
 
   deleteAppointment(id: number) {
       this.appointments.update(appointments => appointments.filter(a => a.id !== id));
+  }
+
+  // Role Methods
+  addRole(role: Omit<Role, 'id'>) {
+    const newRole: Role = { ...role, id: this.nextRoleId++ };
+    this.roles.update(roles => [...roles, newRole]);
+  }
+
+  updateRole(updatedRole: Role) {
+    this.roles.update(roles => 
+      roles.map(r => r.id === updatedRole.id ? updatedRole : r)
+    );
+  }
+
+  deleteRole(id: number) {
+    this.roles.update(roles => roles.filter(r => r.id !== id));
   }
 }

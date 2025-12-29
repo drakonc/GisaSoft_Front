@@ -18,28 +18,36 @@
       <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label for="patientName" class="block mb-2 text-sm font-medium text-gray-900">Nombre del Paciente</label>
-          <input type="text" id="patientName" formControlName="patientName" class="bg-white border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" [class]="f.patientName.touched && f.patientName.invalid ? 'border-red-500' : 'border-gray-300'">
+          <input type="text" id="patientName" formControlName="patientName" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                 [class.border-red-500]="f.patientName.touched && f.patientName.invalid" 
+                 [class.border-gray-300]="!f.patientName.touched || f.patientName.valid">
           @if (f.patientName.touched && f.patientName.invalid) {
             <p class="mt-1 text-xs text-red-600">El nombre es obligatorio.</p>
           }
         </div>
         <div>
           <label for="doctorName" class="block mb-2 text-sm font-medium text-gray-900">Nombre del Doctor</label>
-          <input type="text" id="doctorName" formControlName="doctorName" class="bg-white border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" [class]="f.doctorName.touched && f.doctorName.invalid ? 'border-red-500' : 'border-gray-300'">
+          <input type="text" id="doctorName" formControlName="doctorName" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                 [class.border-red-500]="f.doctorName.touched && f.doctorName.invalid" 
+                 [class.border-gray-300]="!f.doctorName.touched || f.doctorName.valid">
           @if (f.doctorName.touched && f.doctorName.invalid) {
             <p class="mt-1 text-xs text-red-600">El nombre es obligatorio.</p>
           }
         </div>
         <div>
           <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Fecha</label>
-          <input type="date" id="date" formControlName="date" class="bg-white border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" [class]="f.date.touched && f.date.invalid ? 'border-red-500' : 'border-gray-300'">
+          <input type="date" id="date" formControlName="date" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                 [class.border-red-500]="f.date.touched && f.date.invalid" 
+                 [class.border-gray-300]="!f.date.touched || f.date.valid">
            @if (f.date.touched && f.date.invalid) {
             <p class="mt-1 text-xs text-red-600">La fecha es obligatoria.</p>
           }
         </div>
         <div>
           <label for="time" class="block mb-2 text-sm font-medium text-gray-900">Hora</label>
-          <input type="time" id="time" formControlName="time" class="bg-white border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" [class]="f.time.touched && f.time.invalid ? 'border-red-500' : 'border-gray-300'">
+          <input type="time" id="time" formControlName="time" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                 [class.border-red-500]="f.time.touched && f.time.invalid" 
+                 [class.border-gray-300]="!f.time.touched || f.time.valid">
            @if (f.time.touched && f.time.invalid) {
             <p class="mt-1 text-xs text-red-600">La hora es obligatoria.</p>
           }

@@ -1,0 +1,59 @@
+
+<div>
+  <!-- Page Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">{{ titleInfo().title }}</h1>
+    <p class="text-gray-500 mt-1">{{ titleInfo().subtitle }}</p>
+  </div>
+  
+  <!-- Form Container -->
+  <div class="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100">
+    <form [formGroup]="roleForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Role Name -->
+      <div>
+        <label for="roleName" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Rol</label>
+        <input type="text" id="roleName" formControlName="name" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+               [class.border-red-500]="f.name.touched && f.name.invalid" 
+               [class.border-gray-300]="!f.name.touched || f.name.valid">
+        @if (f.name.touched && f.name.invalid) {
+          <p class="mt-1 text-xs text-red-600">El nombre del rol es obligatorio.</p>
+        }
+      </div>
+
+       <!-- Description -->
+      <div>
+        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+        <textarea id="description" formControlName="description" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                  [class.border-red-500]="f.description.touched && f.description.invalid" 
+                  [class.border-gray-300]="!f.description.touched || f.description.valid"></textarea>
+         @if (f.description.touched && f.description.invalid) {
+          <p class="mt-1 text-xs text-red-600">La descripción es obligatoria.</p>
+        }
+      </div>
+
+      <!-- Permissions -->
+      <div class="pt-6 border-t border-gray-200">
+        <label class="text-base font-semibold text-gray-800">Permisos</label>
+        <p class="text-sm text-gray-500 mb-4">Asigne los permisos que tendrá este rol.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" formGroupName="permissions">
+          @for(permission of allPermissions(); track permission.id) {
+            <label class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+              <input type="checkbox" [formControlName]="permission.id" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+              <span class="ml-3 text-sm font-medium text-gray-700">{{ permission.name }}</span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex justify-end pt-6 border-t border-gray-200 mt-6">
+        <button (click)="cancel.emit()" type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Cancelar
+        </button>
+        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50" [disabled]="!roleForm.valid">
+          {{ role() ? 'Actualizar Rol' : 'Guardar Rol' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -25,6 +25,16 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #1d4ed8; /* blue-700 */
     }
+    
+    /* Standardize input styles and fix autofill appearance */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 30px white inset !important;
+        -webkit-text-fill-color: #111827 !important; /* Corresponds to text-gray-900 */
+        box-shadow: 0 0 0 30px white inset !important;
+    }
   </style>
 <script type="importmap">
 {
