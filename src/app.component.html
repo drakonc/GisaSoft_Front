@@ -1,0 +1,52 @@
+
+@if (isLoggedIn()) {
+  <div class="relative h-screen bg-[#FDFCFB] lg:flex">
+    <!-- Sidebar -->
+    <app-sidebar
+      class="fixed inset-y-0 left-0 z-30 w-64 flex-shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0"
+      [class]="isSidebarOpen() ? 'translate-x-0' : '-translate-x-full'"
+      (viewChange)="onViewChange($event)">
+    </app-sidebar>
+
+    <!-- Main content -->
+    <main class="flex-1 overflow-y-auto">
+      @switch (activeView()) {
+        @case ('dashboard') {
+          <app-dashboard 
+            (sidebarToggle)="toggleSidebar()"
+            (logout)="onLogout()"
+            (viewProfile)="onViewChange('profile')">
+          </app-dashboard>
+        }
+        @case ('patient-list') {
+          <app-patient-list 
+            (sidebarToggle)="toggleSidebar()" 
+            (editPatient)="onEditPatient($event)"
+            (addPatient)="onViewChange('patient-form')">
+          </app-patient-list>
+        }
+        @case ('patient-form') {
+          <app-patient-form 
+            [patient]="patientToEdit()"
+            (sidebarToggle)="toggleSidebar()"
+            (save)="onSavePatient($event)"
+            (cancel)="onCancelPatientForm()">
+          </app-patient-form>
+        }
+        @case ('appointment-list') {
+          <app-appointment-list (sidebarToggle)="toggleSidebar()"></app-appointment-list>
+        }
+        @case ('profile') {
+          <app-profile (sidebarToggle)="toggleSidebar()"></app-profile>
+        }
+      }
+    </main>
+
+    <!-- Overlay for mobile when sidebar is open -->
+    @if(isSidebarOpen()) {
+      <div (click)="toggleSidebar()" class="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"></div>
+    }
+  </div>
+} @else {
+  <app-login (loginSuccess)="onLoginSuccess()"></app-login>
+}

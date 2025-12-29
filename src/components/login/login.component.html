@@ -1,0 +1,72 @@
+
+<div class="min-h-screen flex items-center justify-center bg-blue-50/50 p-4">
+  <div class="w-full max-w-md">
+    <!-- Logo and Title -->
+    <div class="flex flex-col items-center justify-center mb-8">
+       <svg class="h-20 w-20 text-blue-600" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M50 0L0 100H100L50 0ZM50 25L25 75H75L50 25Z" />
+       </svg>
+      <h1 class="text-3xl font-bold text-gray-800 mt-2">GIS - Gestión Integral de Salud</h1>
+      <p class="text-gray-500">¡Bienvenido! Por favor, inicie sesión.</p>
+    </div>
+
+    <!-- Login Form Card -->
+    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Email Input -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email"
+            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            [class]="f.email.touched && f.email.invalid ? 'border-red-500' : 'border-gray-300'"
+            placeholder="usted@ejemplo.com">
+          @if (f.email.touched && f.email.errors?.['required']) {
+            <p class="mt-1 text-xs text-red-600">El correo es obligatorio.</p>
+          }
+          @if (f.email.touched && f.email.errors?.['email']) {
+            <p class="mt-1 text-xs text-red-600">Por favor, introduzca un correo válido.</p>
+          }
+        </div>
+
+        <!-- Password Input -->
+        <div>
+          <div class="flex justify-between items-center">
+            <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+            <a href="#" class="text-sm text-blue-600 hover:text-blue-500">¿Olvidó su contraseña?</a>
+          </div>
+          <input 
+            type="password" 
+            id="password" 
+            formControlName="password"
+            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            [class]="f.password.touched && f.password.invalid ? 'border-red-500' : 'border-gray-300'"
+            placeholder="••••••••">
+            @if (f.password.touched && f.password.invalid) {
+                <p class="mt-1 text-xs text-red-600">La contraseña es obligatoria.</p>
+            }
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+          <button 
+            type="submit" 
+            class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            [disabled]="!loginForm.valid">
+            Iniciar Sesión
+          </button>
+        </div>
+      </form>
+    </div>
+
+     <!-- Sign up link -->
+    <p class="mt-6 text-center text-sm text-gray-500">
+      ¿No tiene una cuenta?
+      <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+        Regístrese
+      </a>
+    </p>
+  </div>
+</div>
