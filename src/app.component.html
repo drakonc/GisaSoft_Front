@@ -1,6 +1,6 @@
 
 @if (isLoggedIn()) {
-  <div class="relative h-screen bg-[#FDFCFB] lg:flex">
+  <div class="relative h-screen bg-blue-50/50 lg:flex">
     <!-- Sidebar -->
     <app-sidebar
       class="fixed inset-y-0 left-0 z-30 w-64 flex-shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0"
@@ -10,36 +10,88 @@
 
     <!-- Main content -->
     <main class="flex-1 overflow-y-auto">
-      @switch (activeView()) {
-        @case ('dashboard') {
-          <app-dashboard 
-            (sidebarToggle)="toggleSidebar()"
-            (logout)="onLogout()"
-            (viewProfile)="onViewChange('profile')">
-          </app-dashboard>
-        }
-        @case ('patient-list') {
-          <app-patient-list 
-            (sidebarToggle)="toggleSidebar()" 
-            (editPatient)="onEditPatient($event)"
-            (addPatient)="onViewChange('patient-form')">
-          </app-patient-list>
-        }
-        @case ('patient-form') {
-          <app-patient-form 
-            [patient]="patientToEdit()"
-            (sidebarToggle)="toggleSidebar()"
-            (save)="onSavePatient($event)"
-            (cancel)="onCancelPatientForm()">
-          </app-patient-form>
-        }
-        @case ('appointment-list') {
-          <app-appointment-list (sidebarToggle)="toggleSidebar()"></app-appointment-list>
-        }
-        @case ('profile') {
-          <app-profile (sidebarToggle)="toggleSidebar()"></app-profile>
-        }
-      }
+      <div class="p-6 sm:p-8">
+        <!-- Global Header Card -->
+        <header class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-start">
+          <div class="flex items-center w-full sm:w-auto">
+            <button (click)="toggleSidebar()" class="p-2 rounded-md text-gray-500 hover:bg-gray-100 lg:hidden mr-2 -ml-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
+            <div>
+              <h1 class="text-3xl font-bold text-gray-800">{{ pageInfo().title }}</h1>
+              <p class="text-gray-500 mt-1">{{ pageInfo().subtitle }}</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4 mt-4 sm:mt-0 self-start sm:self-center">
+            <button class="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+              </svg>
+            </button>
+            
+            <div class="relative">
+              <button (click)="toggleProfileMenu()" class="flex items-center space-x-2 focus:outline-none p-1 rounded-md hover:bg-gray-100/50">
+                <img class="h-10 w-10 rounded-full object-cover" src="https://i.pravatar.cc/150?u=dr-anna" alt="User avatar">
+                <div class="hidden sm:block">
+                  <p class="font-semibold text-sm text-gray-800 text-left">Dra. Anna</p>
+                  <p class="text-xs text-gray-500">a.kowalska@gis.health</p>
+                </div>
+              </button>
+
+              @if (isProfileMenuOpen()) {
+                <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg py-2 z-20 border border-gray-100">
+                  <div class="px-4 py-2 border-b border-gray-100">
+                    <p class="text-sm font-semibold text-gray-800">Dra. Anna</p>
+                    <p class="text-xs text-gray-500 truncate">a.kowalska@gis.health</p>
+                  </div>
+                  <a href="#" (click)="$event.preventDefault(); onViewChange('profile');" class="flex items-center px-4 py-2 mt-1 text-sm text-gray-700 hover:bg-blue-50/80 hover:text-blue-600 rounded-md mx-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                    Mi Perfil
+                  </a>
+                  <a href="#" (click)="$event.preventDefault(); onLogout();" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50/80 hover:text-blue-600 rounded-md mx-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" /></svg>
+                    Cerrar Sesión
+                  </a>
+                </div>
+              }
+            </div>
+          </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="mt-8">
+          @switch (activeView()) {
+            @case ('dashboard') {
+              <app-dashboard></app-dashboard>
+            }
+            @case ('patient-list') {
+              <app-patient-list 
+                (addPatient)="onViewChange('patient-form')"
+                (editPatient)="onEditPatient($event)">
+              </app-patient-list>
+            }
+            @case ('patient-form') {
+              <app-patient-form 
+                [patient]="patientToEdit()"
+                (save)="onSavePatient($event)"
+                (cancel)="onCancelPatientForm()">
+              </app-patient-form>
+            }
+            @case ('appointment-list') {
+              <app-appointment-list 
+                (addAppointment)="onAddAppointment()"
+                (editAppointment)="onEditAppointment($event)"
+                (deleteAppointment)="onDeleteAppointment($event)">
+              </app-appointment-list>
+            }
+            @case ('profile') {
+              <app-profile></app-profile>
+            }
+          }
+        </div>
+      </div>
     </main>
 
     <!-- Overlay for mobile when sidebar is open -->
@@ -49,4 +101,13 @@
   </div>
 } @else {
   <app-login (loginSuccess)="onLoginSuccess()"></app-login>
+}
+
+<!-- Appointment Form Modal -->
+@if(isAppointmentModalOpen()) {
+  <app-appointment-form 
+    [appointment]="appointmentToEdit()"
+    (save)="onSaveAppointment($event)"
+    (close)="onCloseAppointmentModal()">
+  </app-appointment-form>
 }

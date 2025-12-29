@@ -1,5 +1,5 @@
 
-import { Component, ChangeDetectionStrategy, output } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-profile',
@@ -7,5 +7,4 @@ import { Component, ChangeDetectionStrategy, output } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileComponent {
-  sidebarToggle = output<void>();
 }

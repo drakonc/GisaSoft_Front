@@ -10,7 +10,6 @@ import { DataService, Patient } from '../../services/data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PatientListComponent {
-  sidebarToggle = output<void>();
   addPatient = output<void>();
   editPatient = output<Patient>();
 

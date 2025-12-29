@@ -11,7 +11,6 @@ import { Patient } from '../../services/data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PatientFormComponent implements OnInit {
-  sidebarToggle = output<void>();
   patient = input<Patient | null>(null);
   save = output<Patient>();
   cancel = output<void>();
