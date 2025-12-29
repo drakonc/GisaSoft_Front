@@ -1,5 +1,5 @@
 
-import { Component, ChangeDetectionStrategy, output, input, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, output, input, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Patient } from '../../services/data.service';
@@ -23,6 +23,14 @@ export class PatientFormComponent implements OnInit {
     notes: ['', Validators.maxLength(500)],
     isActive: [true],
     status: ['active' as 'active' | 'discharged', Validators.required]
+  });
+
+  readonly titleInfo = computed(() => {
+    const isEditing = !!this.patient();
+    return {
+      title: isEditing ? 'Editar Paciente' : 'Añadir Nuevo Paciente',
+      subtitle: `Rellene el formulario para ${isEditing ? 'actualizar el paciente' : 'añadir un nuevo paciente'}.`
+    };
   });
 
   constructor(private fb: FormBuilder) {}

@@ -22,33 +22,14 @@ export type ActiveView = 'dashboard' | 'patient-list' | 'patient-form' | 'appoin
 export class AppComponent {
   private dataService = inject(DataService);
 
-  isLoggedIn = signal(false);
-  isSidebarOpen = signal(false);
+  isLoggedIn = signal(true);
+  isSidebarOpen = signal(true);
   activeView = signal<ActiveView>('dashboard');
   patientToEdit = signal<Patient | null>(null);
   
   isProfileMenuOpen = signal(false);
   isAppointmentModalOpen = signal(false);
   appointmentToEdit = signal<Appointment | null>(null);
-
-  readonly pageInfo = computed(() => {
-    switch (this.activeView()) {
-      case 'dashboard':
-        return { title: 'Dashboard', subtitle: 'Resumen de la actividad reciente de la clínica.' };
-      case 'patient-list':
-        return { title: 'Todos los Pacientes', subtitle: 'Gestione el registro de sus pacientes.' };
-      case 'patient-form':
-        const title = this.patientToEdit() ? 'Editar Paciente' : 'Añadir Nuevo Paciente';
-        const subtitle = `Rellene el formulario para ${this.patientToEdit() ? 'actualizar el paciente' : 'añadir un nuevo paciente'}.`;
-        return { title, subtitle };
-      case 'appointment-list':
-        return { title: 'Lista de Citas', subtitle: 'Vea y gestione las citas de los pacientes.' };
-      case 'profile':
-        return { title: 'Mi Perfil', subtitle: 'Gestione su información personal.' };
-      default:
-        return { title: '', subtitle: '' };
-    }
-  });
 
   onLoginSuccess() {
     this.isLoggedIn.set(true);
