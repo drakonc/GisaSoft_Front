@@ -13,7 +13,7 @@ import { Patient } from '../../services/data.service';
 export class PatientFormComponent implements OnInit {
   patient = input<Patient | null>(null);
   save = output<Patient>();
-  cancel = output<void>();
+  close = output<void>();
 
   patientForm = this.fb.group({
     id: [null as number | null],
@@ -25,13 +25,7 @@ export class PatientFormComponent implements OnInit {
     status: ['active' as 'active' | 'discharged', Validators.required]
   });
 
-  readonly titleInfo = computed(() => {
-    const isEditing = !!this.patient();
-    return {
-      title: isEditing ? 'Editar Paciente' : 'Añadir Nuevo Paciente',
-      subtitle: `Rellene el formulario para ${isEditing ? 'actualizar el paciente' : 'añadir un nuevo paciente'}.`
-    };
-  });
+  readonly title = computed(() => this.patient() ? 'Editar Paciente' : 'Añadir Nuevo Paciente');
 
   constructor(private fb: FormBuilder) {}
 

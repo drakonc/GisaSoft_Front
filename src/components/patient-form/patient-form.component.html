@@ -1,83 +1,88 @@
 
-<div>
-  <!-- Page Header -->
-  <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-800">{{ titleInfo().title }}</h1>
-    <p class="text-gray-500 mt-1">{{ titleInfo().subtitle }}</p>
-  </div>
-  
-  <!-- Form Container -->
-  <div class="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100">
-    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="space-y-6">
-      <!-- Patient Name -->
-      <div>
-        <label for="patientName" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Paciente</label>
-        <input type="text" id="patientName" formControlName="name" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
-               [class.border-red-500]="f.name.touched && f.name.invalid" 
-               [class.border-gray-300]="!f.name.touched || f.name.valid">
-        @if (f.name.touched && f.name.invalid) {
-          <p class="mt-1 text-xs text-red-600">El nombre del paciente es obligatorio.</p>
-        }
-      </div>
+<div class="fixed inset-0 z-40 bg-black bg-opacity-50 flex items-center justify-center p-4" (click)="close.emit()">
+  <div class="relative bg-white rounded-lg shadow-xl w-full max-w-2xl" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between p-4 border-b">
+      <h3 class="text-lg font-semibold text-gray-900">{{ title() }}</h3>
+      <button (click)="close.emit()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center">
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+        <span class="sr-only">Cerrar modal</span>
+      </button>
+    </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Condition -->
+    <!-- Modal Body -->
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+      <div class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+        <!-- Patient Name -->
         <div>
-          <label for="condition" class="block text-sm font-medium text-gray-700 mb-1">Condición</label>
-          <select id="condition" formControlName="condition" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
-                  [class.border-red-500]="f.condition.touched && f.condition.invalid" 
-                  [class.border-gray-300]="!f.condition.touched || f.condition.valid">
-            <option [ngValue]="null" disabled>Seleccione una condición</option>
-            <option value="Cardiología">Cardiología</option>
-            <option value="Neurología">Neurología</option>
-            <option value="Oncología">Oncología</option>
-            <option value="General">General</option>
-          </select>
-          @if (f.condition.touched && f.condition.invalid) {
-            <p class="mt-1 text-xs text-red-600">Por favor, seleccione una condición.</p>
+          <label for="patientName" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Paciente</label>
+          <input type="text" id="patientName" formControlName="name" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                 [class.border-red-500]="f.name.touched && f.name.invalid" 
+                 [class.border-gray-300]="!f.name.touched || f.name.valid">
+          @if (f.name.touched && f.name.invalid) {
+            <p class="mt-1 text-xs text-red-600">El nombre del paciente es obligatorio.</p>
           }
         </div>
-        <!-- Last Appointment -->
-        <div>
-          <label for="lastAppointment" class="block text-sm font-medium text-gray-700 mb-1">Última Cita</label>
-          <input type="date" id="lastAppointment" formControlName="lastAppointment" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
-                 [class.border-red-500]="f.lastAppointment.touched && f.lastAppointment.invalid" 
-                 [class.border-gray-300]="!f.lastAppointment.touched || f.lastAppointment.valid">
-            @if (f.lastAppointment.touched && f.lastAppointment.invalid) {
-            <p class="mt-1 text-xs text-red-600">La fecha es obligatoria.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Condition -->
+          <div>
+            <label for="condition" class="block text-sm font-medium text-gray-700 mb-1">Condición</label>
+            <select id="condition" formControlName="condition" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                    [class.border-red-500]="f.condition.touched && f.condition.invalid" 
+                    [class.border-gray-300]="!f.condition.touched || f.condition.valid">
+              <option [ngValue]="null" disabled>Seleccione una condición</option>
+              <option value="Cardiología">Cardiología</option>
+              <option value="Neurología">Neurología</option>
+              <option value="Oncología">Oncología</option>
+              <option value="General">General</option>
+            </select>
+            @if (f.condition.touched && f.condition.invalid) {
+              <p class="mt-1 text-xs text-red-600">Por favor, seleccione una condición.</p>
             }
-        </div>
-      </div>
-
-      <!-- Notes -->
-      <div>
-        <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notas</label>
-        <textarea id="notes" formControlName="notes" rows="4" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
-      </div>
-
-      <!-- Status Radio Buttons -->
-      <div>
-        <label class="text-sm font-medium text-gray-700">Estado</label>
-        <div class="mt-2 space-y-2">
-          <div class="flex items-center">
-            <input id="status-active" value="active" type="radio" formControlName="status" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-            <label for="status-active" class="ml-2 block text-sm text-gray-900">Activo</label>
           </div>
-          <div class="flex items-center">
-            <input id="status-draft" value="discharged" type="radio" formControlName="status" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-            <label for="status-draft" class="ml-2 block text-sm text-gray-900">De Alta</label>
+          <!-- Last Appointment -->
+          <div>
+            <label for="lastAppointment" class="block text-sm font-medium text-gray-700 mb-1">Última Cita</label>
+            <input type="date" id="lastAppointment" formControlName="lastAppointment" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                   [class.border-red-500]="f.lastAppointment.touched && f.lastAppointment.invalid" 
+                   [class.border-gray-300]="!f.lastAppointment.touched || f.lastAppointment.valid">
+              @if (f.lastAppointment.touched && f.lastAppointment.invalid) {
+              <p class="mt-1 text-xs text-red-600">La fecha es obligatoria.</p>
+              }
           </div>
         </div>
-      </div>
 
-      <!-- Form Actions -->
-      <div class="flex justify-end pt-6 border-t border-gray-200 mt-6">
-        <button (click)="cancel.emit()" type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-          Cancelar
-        </button>
-        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50" [disabled]="!patientForm.valid">
-          {{ patient() ? 'Actualizar Paciente' : 'Guardar Paciente' }}
-        </button>
+        <!-- Notes -->
+        <div>
+          <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notas</label>
+          <textarea id="notes" formControlName="notes" rows="3" class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+        </div>
+
+        <!-- Status Radio Buttons -->
+        <div>
+          <label class="text-sm font-medium text-gray-700">Estado</label>
+          <div class="mt-2 flex items-center gap-x-6">
+            <div class="flex items-center">
+              <input id="status-active" value="active" type="radio" formControlName="status" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+              <label for="status-active" class="ml-2 block text-sm text-gray-900">Activo</label>
+            </div>
+            <div class="flex items-center">
+              <input id="status-draft" value="discharged" type="radio" formControlName="status" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+              <label for="status-draft" class="ml-2 block text-sm text-gray-900">De Alta</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="flex items-center p-4 border-t border-gray-200 rounded-b justify-end">
+          <button (click)="close.emit()" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Cancelar</button>
+          <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ml-3 disabled:opacity-50" [disabled]="!patientForm.valid">
+            {{ patient() ? 'Actualizar Paciente' : 'Guardar Paciente' }}
+          </button>
       </div>
     </form>
   </div>

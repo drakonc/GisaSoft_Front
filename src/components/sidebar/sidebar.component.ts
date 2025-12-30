@@ -40,11 +40,7 @@ export class SidebarComponent {
       name: 'Pacientes', 
       icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-2.278 1 1 0 0 0 0-1.414L18.25 12.16a1 1 0 0 0-1.414 0l-1.625 1.625a1 1 0 0 1-1.414 0l-1.625-1.625a1 1 0 0 0-1.414 0L9 14.25l-2.28-2.28a1 1 0 0 0-1.414 1.414l2.28 2.28a1 1 0 0 0 1.414 0l1.625-1.625a1 1 0 0 1 1.414 0l1.625 1.625a1 1 0 0 0 1.414 0L15 19.128Z" />',
       active: false,
-      expanded: false,
-      subItems: [
-        { name: 'Todos los Pacientes', active: false, view: 'patient-list' },
-        { name: 'Añadir Nuevo', active: false, view: 'patient-form' },
-      ]
+      view: 'patient-list',
     },
      { 
       name: 'Citas', 
@@ -56,7 +52,7 @@ export class SidebarComponent {
       name: 'Facturación', 
       icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h6m-6 2.25h6M3 17.25a1.5 1.5 0 0 1-1.5-1.5V6.75a1.5 1.5 0 0 1 1.5-1.5h15a1.5 1.5 0 0 1 1.5 1.5v8.25a1.5 1.5 0 0 1-1.5 1.5H3Z" />', 
       active: false, 
-      view: 'dashboard' 
+      view: 'invoice-list' 
     },
     { 
       name: 'Configuración', 
@@ -65,8 +61,8 @@ export class SidebarComponent {
       expanded: false,
       subItems: [
         { name: 'Roles', active: false, view: 'role-list' },
-        { name: 'Usuarios', active: false, view: 'dashboard' },
-        { name: 'Sedes', active: false, view: 'dashboard' },
+        { name: 'Usuarios', active: false, view: 'user-list' },
+        { name: 'Sedes', active: false, view: 'location-list' },
       ]
     },
   ]);
@@ -78,13 +74,10 @@ export class SidebarComponent {
 
   selectMenuItem(selectedItem: MenuItem) {
     if (selectedItem.subItems) {
-      const isCurrentlyExpanded = !!this.menuItems().find(
-        i => i.name === selectedItem.name
-      )?.expanded;
       this.menuItems.update(items =>
         items.map(item => ({
           ...item,
-          expanded: item.name === selectedItem.name ? !isCurrentlyExpanded : false,
+          expanded: item.name === selectedItem.name ? !item.expanded : false,
         }))
       );
     } else {

@@ -1,0 +1,84 @@
+
+<div class="fixed inset-0 z-40 bg-black bg-opacity-50 flex items-center justify-center p-4" (click)="close.emit()">
+  <div class="relative bg-white rounded-lg shadow-xl w-full max-w-2xl" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between p-4 border-b">
+      <h3 class="text-lg font-semibold text-gray-900">{{ title() }}</h3>
+      <button (click)="close.emit()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center">
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+        <span class="sr-only">Cerrar modal</span>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[70vh] overflow-y-auto">
+        <!-- Invoice Number -->
+        <div>
+          <label for="invoiceNumber" class="block text-sm font-medium text-gray-700 mb-1">Nº Factura</label>
+          <input type="text" id="invoiceNumber" formControlName="invoiceNumber" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                 [class.border-red-500]="f.invoiceNumber.touched && f.invoiceNumber.invalid" 
+                 [class.border-gray-300]="!f.invoiceNumber.touched || f.invoiceNumber.valid">
+          @if (f.invoiceNumber.touched && f.invoiceNumber.invalid) {
+            <p class="mt-1 text-xs text-red-600">El número de factura es obligatorio.</p>
+          }
+        </div>
+
+        <!-- Patient Name -->
+        <div>
+          <label for="patientName" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Paciente</label>
+          <input type="text" id="patientName" formControlName="patientName" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                 [class.border-red-500]="f.patientName.touched && f.patientName.invalid" 
+                 [class.border-gray-300]="!f.patientName.touched || f.patientName.valid">
+          @if (f.patientName.touched && f.patientName.invalid) {
+            <p class="mt-1 text-xs text-red-600">El nombre del paciente es obligatorio.</p>
+          }
+        </div>
+
+        <!-- Amount -->
+        <div>
+          <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Importe</label>
+          <input type="number" id="amount" formControlName="amount" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                 [class.border-red-500]="f.amount.touched && f.amount.invalid" 
+                 [class.border-gray-300]="!f.amount.touched || f.amount.valid">
+          @if (f.amount.touched && f.amount.invalid) {
+            <p class="mt-1 text-xs text-red-600">El importe debe ser un número válido.</p>
+          }
+        </div>
+
+        <!-- Date -->
+        <div>
+          <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+          <input type="date" id="date" formControlName="date" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                 [class.border-red-500]="f.date.touched && f.date.invalid" 
+                 [class.border-gray-300]="!f.date.touched || f.date.valid">
+            @if (f.date.touched && f.date.invalid) {
+            <p class="mt-1 text-xs text-red-600">La fecha es obligatoria.</p>
+            }
+        </div>
+        
+        <!-- Status -->
+        <div class="md:col-span-2">
+            <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+            <select id="status" formControlName="status" class="block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    [class.border-red-500]="f.status.touched && f.status.invalid"
+                    [class.border-gray-300]="!f.status.touched || f.status.valid">
+              <option value="pending">Pendiente</option>
+              <option value="paid">Pagada</option>
+              <option value="overdue">Vencida</option>
+            </select>
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="flex items-center p-4 border-t border-gray-200 rounded-b justify-end">
+          <button (click)="close.emit()" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Cancelar</button>
+          <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ml-3 disabled:opacity-50" [disabled]="!invoiceForm.valid">
+            {{ invoice() ? 'Actualizar Factura' : 'Guardar Factura' }}
+          </button>
+      </div>
+    </form>
+  </div>
+</div>

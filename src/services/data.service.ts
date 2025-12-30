@@ -35,6 +35,32 @@ export interface Role {
   permissionIds: number[];
 }
 
+export interface Invoice {
+  id?: number;
+  invoiceNumber: string;
+  patientName: string;
+  amount: number;
+  date: string;
+  status: 'paid' | 'pending' | 'overdue';
+}
+
+export interface User {
+  id?: number;
+  name: string;
+  email: string;
+  roleId: number;
+  locationId: number;
+  status: 'active' | 'inactive';
+}
+
+export interface Location {
+  id?: number;
+  name: string;
+  address: string;
+  phone: string;
+  city: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,6 +68,9 @@ export class DataService {
   private nextPatientId = 4;
   private nextAppointmentId = 4;
   private nextRoleId = 4;
+  private nextInvoiceId = 4;
+  private nextUserId = 4;
+  private nextLocationId = 3;
 
   readonly patients = signal<Patient[]>([
     { id: 1, name: 'Carlos Ramirez', condition: 'Cardiología', lastAppointment: '2024-07-15', notes: 'Revisión anual de marcapasos.', isActive: true, status: 'active' },
@@ -67,6 +96,23 @@ export class DataService {
     { id: 1, code: 'ADM', name: 'Administrador', description: 'Acceso total al sistema', permissionIds: [1, 2, 3, 4, 5] },
     { id: 2, code: 'DOC', name: 'Doctor', description: 'Acceso a pacientes y citas', permissionIds: [1, 2] },
     { id: 3, code: 'REC', name: 'Recepcionista', description: 'Acceso a la gestión de citas', permissionIds: [2] }
+  ]);
+
+  readonly invoices = signal<Invoice[]>([
+    { id: 1, invoiceNumber: 'INV-001', patientName: 'Carlos Ramirez', amount: 250.00, date: '2024-07-15', status: 'paid' },
+    { id: 2, invoiceNumber: 'INV-002', patientName: 'Sofia Torres', amount: 150.50, date: '2024-07-20', status: 'pending' },
+    { id: 3, invoiceNumber: 'INV-003', patientName: 'Luis Morales', amount: 1200.00, date: '2024-06-01', status: 'overdue' },
+  ]);
+
+  readonly locations = signal<Location[]>([
+    { id: 1, name: 'Sede Central', address: 'Av. Principal 123', phone: '912 345 678', city: 'Madrid' },
+    { id: 2, name: 'Clínica Norte', address: 'C. Secundaria 45', phone: '934 567 890', city: 'Barcelona' }
+  ]);
+
+  readonly users = signal<User[]>([
+    { id: 1, name: 'Dra. Anna Kowalska', email: 'a.kowalska@gis.health', roleId: 1, locationId: 1, status: 'active' },
+    { id: 2, name: 'Dr. Juan Garcia', email: 'j.garcia@gis.health', roleId: 2, locationId: 1, status: 'active' },
+    { id: 3, name: 'Marta Sanchez', email: 'm.sanchez@gis.health', roleId: 3, locationId: 2, status: 'inactive' }
   ]);
 
   // Patient Methods
@@ -111,7 +157,7 @@ export class DataService {
     this.roles.update(roles => 
       roles.map(r => {
         if (r.id === updatedRole.id) {
-          return { ...r, ...updatedRole }; // Keep existing permissionIds
+          return { ...r, ...updatedRole };
         }
         return r;
       })
@@ -126,5 +172,53 @@ export class DataService {
     this.roles.update(roles =>
       roles.map(r => (r.id === roleId ? { ...r, permissionIds } : r))
     );
+  }
+
+  // Invoice Methods
+  addInvoice(invoice: Omit<Invoice, 'id'>) {
+    const newInvoice: Invoice = { ...invoice, id: this.nextInvoiceId++ };
+    this.invoices.update(invoices => [...invoices, newInvoice]);
+  }
+
+  updateInvoice(updatedInvoice: Invoice) {
+    this.invoices.update(invoices => 
+      invoices.map(i => i.id === updatedInvoice.id ? updatedInvoice : i)
+    );
+  }
+
+  deleteInvoice(id: number) {
+    this.invoices.update(invoices => invoices.filter(i => i.id !== id));
+  }
+
+  // User Methods
+  addUser(user: Omit<User, 'id'>) {
+    const newUser: User = { ...user, id: this.nextUserId++ };
+    this.users.update(users => [...users, newUser]);
+  }
+
+  updateUser(updatedUser: User) {
+    this.users.update(users => 
+      users.map(u => u.id === updatedUser.id ? updatedUser : u)
+    );
+  }
+
+  deleteUser(id: number) {
+    this.users.update(users => users.filter(u => u.id !== id));
+  }
+
+  // Location Methods
+  addLocation(location: Omit<Location, 'id'>) {
+    const newLocation: Location = { ...location, id: this.nextLocationId++ };
+    this.locations.update(locations => [...locations, newLocation]);
+  }
+
+  updateLocation(updatedLocation: Location) {
+    this.locations.update(locations => 
+      locations.map(l => l.id === updatedLocation.id ? updatedLocation : l)
+    );
+  }
+
+  deleteLocation(id: number) {
+    this.locations.update(locations => locations.filter(l => l.id !== id));
   }
 }

@@ -1,10 +1,11 @@
 
 <div class="min-h-screen w-full flex flex-col items-center justify-center bg-slate-100 p-4">
-  <div class="w-full max-w-6xl">
+  <div class="w-full max-w-md md:max-w-6xl">
     <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
-      <div class="grid lg:grid-cols-5">
-        <!-- Left Column: Branding -->
-        <div class="lg:col-span-2 p-12 flex flex-col justify-center items-center text-center border-r border-gray-100">
+      <div class="grid md:grid-cols-5">
+        
+        <!-- Left Column: Branding - Hidden on mobile -->
+        <div class="hidden md:flex md:col-span-2 p-12 flex-col justify-center items-center text-center border-r border-gray-100 bg-gray-50">
           <svg class="h-20 w-20 text-blue-600" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M50 0L0 100H100L50 0ZM50 25L25 75H75L50 25Z" />
           </svg>
@@ -13,9 +14,17 @@
         </div>
 
         <!-- Right Column: Form -->
-        <div class="lg:col-span-3 p-16">
-          <h2 class="text-3xl font-bold text-gray-800">Bienvenido de nuevo</h2>
-          <p class="text-gray-500 mt-2">Inicie sesión en su cuenta para continuar.</p>
+        <div class="md:col-span-3 p-8 sm:p-12 lg:p-16">
+          
+          <!-- Mobile-only Logo -->
+          <div class="md:hidden flex flex-col items-center text-center mb-6">
+             <svg class="h-16 w-16 text-blue-600" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M50 0L0 100H100L50 0ZM50 25L25 75H75L50 25Z" />
+              </svg>
+          </div>
+          
+          <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 text-center md:text-left">Bienvenido de nuevo</h2>
+          <p class="text-gray-500 mt-2 text-center md:text-left">Inicie sesión en su cuenta para continuar.</p>
 
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
             <!-- Username Input -->

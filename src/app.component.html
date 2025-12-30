@@ -62,17 +62,7 @@
               <app-dashboard></app-dashboard>
             }
             @case ('patient-list') {
-              <app-patient-list 
-                (addPatient)="onViewChange('patient-form')"
-                (editPatient)="onEditPatient($event)">
-              </app-patient-list>
-            }
-            @case ('patient-form') {
-              <app-patient-form 
-                [patient]="patientToEdit()"
-                (save)="onSavePatient($event)"
-                (cancel)="onCancelPatientForm()">
-              </app-patient-form>
+              <app-patient-list></app-patient-list>
             }
             @case ('appointment-list') {
               <app-appointment-list 
@@ -81,8 +71,27 @@
                 (deleteAppointment)="onDeleteAppointment($event)">
               </app-appointment-list>
             }
-             @case ('role-list') {
+            @case ('role-list') {
               <app-role-list></app-role-list>
+            }
+            @case ('invoice-list') {
+              <app-invoice-list></app-invoice-list>
+            }
+            @case ('user-list') {
+              <app-user-list
+                (addUser)="onAddUser()"
+                (editUser)="onEditUser($event)">
+              </app-user-list>
+            }
+            @case ('user-form') {
+                <app-user-form
+                  [user]="userToEdit()"
+                  (save)="onSaveUser($event)"
+                  (cancel)="onCancelUserForm()">
+                </app-user-form>
+            }
+             @case ('location-list') {
+              <app-location-list></app-location-list>
             }
             @case ('profile') {
               <app-profile></app-profile>
