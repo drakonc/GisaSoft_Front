@@ -24,10 +24,12 @@ export interface Permission {
   id: number;
   name: string;
   description: string;
+  category: string;
 }
 
 export interface Role {
   id?: number;
+  code: string;
   name: string;
   description: string;
   permissionIds: number[];
@@ -54,17 +56,17 @@ export class DataService {
   ]);
 
   readonly permissions = signal<Permission[]>([
-    { id: 1, name: 'gestion-pacientes', description: 'Crear, editar y eliminar pacientes' },
-    { id: 2, name: 'gestion-citas', description: 'Crear, editar y eliminar citas' },
-    { id: 3, name: 'ver-facturacion', description: 'Acceder a la sección de facturación' },
-    { id: 4, name: 'gestion-usuarios', description: 'Crear, editar y eliminar usuarios del sistema' },
-    { id: 5, name: 'gestion-roles', description: 'Crear, editar y eliminar roles y permisos' }
+    { id: 1, name: 'gestion-pacientes', description: 'Crear, editar y eliminar pacientes', category: 'Gestión Clínica' },
+    { id: 2, name: 'gestion-citas', description: 'Crear, editar y eliminar citas', category: 'Gestión Clínica' },
+    { id: 3, name: 'ver-facturacion', description: 'Acceder a la sección de facturación', category: 'Finanzas' },
+    { id: 4, name: 'gestion-usuarios', description: 'Crear, editar y eliminar usuarios del sistema', category: 'Administración del Sistema' },
+    { id: 5, name: 'gestion-roles', description: 'Crear, editar y eliminar roles y permisos', category: 'Administración del Sistema' }
   ]);
 
   readonly roles = signal<Role[]>([
-    { id: 1, name: 'Administrador', description: 'Acceso total al sistema', permissionIds: [1, 2, 3, 4, 5] },
-    { id: 2, name: 'Doctor', description: 'Acceso a pacientes y citas', permissionIds: [1, 2] },
-    { id: 3, name: 'Recepcionista', description: 'Acceso a la gestión de citas', permissionIds: [2] }
+    { id: 1, code: 'ADM', name: 'Administrador', description: 'Acceso total al sistema', permissionIds: [1, 2, 3, 4, 5] },
+    { id: 2, code: 'DOC', name: 'Doctor', description: 'Acceso a pacientes y citas', permissionIds: [1, 2] },
+    { id: 3, code: 'REC', name: 'Recepcionista', description: 'Acceso a la gestión de citas', permissionIds: [2] }
   ]);
 
   // Patient Methods
@@ -100,18 +102,29 @@ export class DataService {
   }
 
   // Role Methods
-  addRole(role: Omit<Role, 'id'>) {
-    const newRole: Role = { ...role, id: this.nextRoleId++ };
+  addRole(role: Omit<Role, 'id' | 'permissionIds'>) {
+    const newRole: Role = { ...role, id: this.nextRoleId++, permissionIds: [] };
     this.roles.update(roles => [...roles, newRole]);
   }
 
-  updateRole(updatedRole: Role) {
+  updateRole(updatedRole: Omit<Role, 'permissionIds'>) {
     this.roles.update(roles => 
-      roles.map(r => r.id === updatedRole.id ? updatedRole : r)
+      roles.map(r => {
+        if (r.id === updatedRole.id) {
+          return { ...r, ...updatedRole }; // Keep existing permissionIds
+        }
+        return r;
+      })
     );
   }
 
   deleteRole(id: number) {
     this.roles.update(roles => roles.filter(r => r.id !== id));
+  }
+
+  updateRolePermissions(roleId: number, permissionIds: number[]) {
+    this.roles.update(roles =>
+      roles.map(r => (r.id === roleId ? { ...r, permissionIds } : r))
+    );
   }
 }

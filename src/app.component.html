@@ -82,17 +82,7 @@
               </app-appointment-list>
             }
              @case ('role-list') {
-              <app-role-list
-                (addRole)="onViewChange('role-form')"
-                (editRole)="onEditRole($event)">
-              </app-role-list>
-            }
-            @case ('role-form') {
-              <app-role-form
-                [role]="roleToEdit()"
-                (save)="onSaveRole($event)"
-                (cancel)="onCancelRoleForm()">
-              </app-role-form>
+              <app-role-list></app-role-list>
             }
             @case ('profile') {
               <app-profile></app-profile>
